@@ -19,6 +19,10 @@ out/
 .DS_Store
 Thumbs.db
 
+# MongoDB Specific
+data/db/
+mongod.log
+
 # Temporary files
 tmp/
 *.tmp
