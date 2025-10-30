@@ -90,7 +90,6 @@ exports.home = async function (req, res) {
   if (req.session.user) {
     // fetch feed of posts for current user
     let posts = await Post.getFeed(req.session.user._id);
-    console.log(posts);
     res.render("home-dashboard", { posts: posts });
     // res.send("Welcome to the actual application!!!");
   } else {
