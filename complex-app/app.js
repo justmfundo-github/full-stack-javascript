@@ -4,6 +4,7 @@ const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
 const markdown = require("marked");
 const sanitizeHTML = require("sanitize-html");
+const csrf = require("csurf");
 
 let app = express();
 
@@ -46,7 +47,27 @@ app.use(express.static("public"));
 app.set("views", "views");
 app.set("view engine", "ejs");
 
+// implementing csrf protection
+// app.use(csrf());
+
+// app.use(function (req, res, next) {
+//   res.locals.csrfToken = req.csrfToken();
+//   next();
+// });
+
 app.use("/", router);
+
+// Error handling for the use of the csurf package that handles csrf attacks
+// app.use(function (err, req, res, next) {
+//   if (err) {
+//     if (err.code == "EBADCSRFTOKEN") {
+//       req.flash("erorrs", "Cross site request forgery detected");
+//       req.session.save(() => res.redirect("/"));
+//     } else {
+//       res.render("404");
+//     }
+//   }
+// });
 
 const server = require("http").createServer(app);
 
