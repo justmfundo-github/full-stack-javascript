@@ -6,7 +6,12 @@ const markdown = require("marked");
 const sanitizeHTML = require("sanitize-html");
 const csrf = require("csurf");
 
-let app = express();
+const app = express();
+
+// Ensuring that api routes don't have to go through session management
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use("/api", require("./router-api.js"));
 
 let sessionOptions = session({
   secret: "JavaScript is soooooooo cool",
@@ -39,9 +44,6 @@ app.use(function (req, res, next) {
 });
 
 const router = require("./router.js");
-
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
 app.use(express.static("public"));
 app.set("views", "views");
