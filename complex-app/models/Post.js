@@ -11,28 +11,44 @@ let Post = function (data, userid, requestedPostId) {
   this.requestedPostId = requestedPostId;
 };
 
-Post.prototype.create = function () {
-  return new Promise((resolve, reject) => {
-    //console.log("Time to clean up ");
-    this.cleanUp();
-    this.validate();
-    //console.log("Just completed validation... ");
-    if (!this.errors.length) {
-      //save post into the database
-      //console.log("Saving post to the database...");
-      postsCollection
-        .insertOne(this.data)
-        .then((info) => {
-          resolve(info.insertedId);
-        })
-        .catch(() => {
-          this.errors.push("Please try again later");
-          reject(this.errors);
-        });
-    } else {
+// Post.prototype.create = function () {
+//   return new Promise((resolve, reject) => {
+//     this.cleanUp();
+//     this.validate();
+//     if (!this.errors.length) {
+//       //save post into the database
+//       postsCollection
+//         .insertOne(this.data)
+//         .then((info) => {
+//           resolve(info.insertedId);
+//         })
+//         .catch(() => {
+//           this.errors.push("Please try again later");
+//           reject(this.errors);
+//         });
+//     } else {
+//       reject(this.errors);
+//     }
+//   });
+// };
+
+// Building the create function using the await syntax and simplifying the above commented code
+
+Post.prototype.create = async function () {
+  this.cleanUp();
+  this.validate();
+  if (!this.errors.length) {
+    //save post into the database
+    try {
+      const info = await postsCollection.insertOne(this.data);
+      return info.insertedId;
+    } catch (err) {
+      this.errors.push("Please try again later");
       reject(this.errors);
     }
-  });
+  } else {
+    throw this.errors;
+  }
 };
 
 Post.prototype.update = function () {

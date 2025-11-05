@@ -1,6 +1,7 @@
 import Search from "./modules/search";
 import Chat from "./modules/chat";
 import RegistrationForm from "./modules/registrationForm";
+import Spa from "./modules/spa";
 
 if (document.querySelector(".header-search-icon")) {
   new Search();
@@ -8,6 +9,7 @@ if (document.querySelector(".header-search-icon")) {
 
 if (document.querySelector("#chat-wrapper")) {
   new Chat();
+  Spa();
 }
 
 if (document.querySelector("#registration-form")) {
